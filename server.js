@@ -11,7 +11,9 @@ app.set('port', process.env.PORT || 3000);
 app.get('/', (request, response) => {
   const options = {
     method: 'GET',
-    uri: 'https://www.smugmug.com/api/v2/user/robbiejaeger?APIKey=' + process.env.SMUGMUG_API_KEY,
+    uri: 'https://www.smugmug.com/api/v2/album/pvRWcT!images?APIKey=' + process.env.SMUGMUG_API_KEY,
+    // uri: 'https://www.smugmug.com/api/v2/user/robbiejaeger!albums?APIKey=' + process.env.SMUGMUG_API_KEY,
+    // uri: 'https://www.smugmug.com/api/v2/album/pvRWcT/image/5GpFbBM-0?APIKey=' + process.env.SMUGMUG_API_KEY,
     headers: {
         'Accept': 'application/json'
     },
@@ -20,11 +22,14 @@ app.get('/', (request, response) => {
 
   rp(options)
     .then((res) => {
-      console.log(res)
-      response.render('home', { smugResponse: JSON.stringify(res, null, 2) });
+      // console.log(res.Response.AlbumImage)
+      let thumbnailUrls = res.Response.AlbumImage.map((image) => {
+        return image.ThumbnailUrl;
+      });
+      response.render('home', { thumbnailUrls });
     })
-    .catch(
-      (err) => {console.error("error", { err });
+    .catch((err) => {
+      console.error(err);
     })
 });
 

@@ -1,3 +1,5 @@
 <h1>Smugmug Test</h1>
 
-{{smugResponse}}
+{{#each thumbnailUrls}}
+  <img src="{{this}}">
+{{/each}}
